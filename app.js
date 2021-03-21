@@ -48,13 +48,29 @@ app.get('/compose', function(req, res) {
 app.post('/compose', function(req, res) {
   //console.log(" "+req.body.blog_post);
   const post = {
-    title: req.body.blog_post,
+    title: req.body.blog_post.toLowerCase().charAt(0).toUpperCase() + req.body.blog_post.slice(1),
     body: req.body.post_body
   };
-
   posts.push(post);
   //console.log("" + post.title + post.body);
   res.redirect("/");
+});
+
+
+app.get('/posts/:postName',function(req,res){
+  console.log(req.params.postName);
+
+for(post in posts){
+  console.log(posts[post].title);
+  if (posts[post].title === req.params.postName){
+    console.log("Match found");
+  }
+}
+
+  // if (req.params.postName === 'Test'){
+  //
+  // }
+
 });
 
 

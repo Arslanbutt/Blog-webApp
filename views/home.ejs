@@ -1,7 +1,6 @@
 <%- include("partials/header") -%>
-<h1>Home</h1>
 <% for(content in homeContent){%>
-<h2><%= homeContent[content].title %> </h2>
+<h1><%= homeContent[content].title %> </h1>
 <p> <%= homeContent[content].body %> </p>
 <% } %>
 <%- include("partials/footer") -%>
