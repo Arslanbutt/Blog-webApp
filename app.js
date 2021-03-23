@@ -69,7 +69,7 @@ for(post in posts){
     console.log("Match found");
     res.render('post',{
       title : posts[post].title,
-      body : posts[post].body
+      body : posts[post].body,
     });
   } else{
     console.log("Match not found");
