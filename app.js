@@ -35,9 +35,11 @@ const blogSchema = new mongoose.Schema({
 const Blog = new mongoose.model("Blog",blogSchema);
 
 const defaultPost = new Blog({
-  title : 'Home',
+  title : 'home',
   post : homeStartingContent
 });
+
+//defaultPost.save();
 
 app.get('/', function(req, res) {
 
@@ -87,11 +89,11 @@ app.get('/compose', function(req, res) {
 
 app.post('/compose', function(req, res) {
   //console.log(" "+req.body.blog_post);
-  const post = {
-    title: req.body.blog_post.toLowerCase().charAt(0).toUpperCase() + req.body.blog_post.slice(1),
-    body: req.body.post_body
-  };
-  posts.push(post);
+  const post =new Blog( {
+    title: req.body.blog_post.toLowerCase(),
+    post: req.body.post_body
+  });
+  post.save();
   //console.log("" + post.title + post.body);
   res.redirect("/");
 });
@@ -100,19 +102,31 @@ app.post('/compose', function(req, res) {
 app.get('/posts/:postName',function(req,res){
   //console.log(req.params.postName);
 let urlTitle = lodash.lowerCase(req.params.postName);
-for(post in posts){
-  console.log(posts[post].title);
-  let storedTitle = lodash.lowerCase(posts[post].title);
-  if (urlTitle === storedTitle){
-    console.log("Match found");
+
+Blog.findOne({title : urlTitle},function(err,foundPost){
+  if(!err){
     res.render('post',{
-      title : posts[post].title,
-      body : posts[post].body,
+      title : foundPost.title,
+      body : foundPost.post,
     });
   } else{
-    console.log("Match not found");
+    console.log(err);
   }
-}
+});
+
+// for(post in posts){
+//   console.log(posts[post].title);
+//   let storedTitle = lodash.lowerCase(posts[post].title);
+//   if (urlTitle === storedTitle){
+//     console.log("Match found");
+//     res.render('post',{
+//       title : posts[post].title,
+//       body : posts[post].body,
+//     });
+//   } else{
+//     console.log("Match not found");
+//   }
+// }
 
   // if (req.params.postName === 'Test'){
   //
